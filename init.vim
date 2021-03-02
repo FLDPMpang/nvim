@@ -21,9 +21,9 @@ set relativenumber
 set cursorline
 set hidden
 set noexpandtab
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set autoindent
 set list
 set listchars=tab:\|\ ,trail:▫
@@ -258,22 +258,41 @@ noremap tmi :+tabmove<CR>
 noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
 
 call plug#begin('~/.config/nvim/plugged')
+Plug '907th/vim-auto-save'
+Plug 'iamcco/markdown-preview.nvim'
+Plug 'airblade/vim-gitgutter'
+Plug 'mg979/vim-xtabline'
 Plug 'tpope/vim-surround'
 Plug 'whatyouhide/vim-gotham'
 Plug 'chriskempson/base16-vim'
 Plug 'junegunn/vim-peekaboo'
+Plug 'lifepillar/vim-solarized8'
 Plug 'crusoexia/vim-monokai'
 Plug 'vim-airline/vim-airline'
+Plug 'godlygeek/tabular' 
+Plug 'plasticboy/vim-markdown'
 Plug 'w0rp/ale'
 Plug 'luochen1990/rainbow'
 Plug 'vhda/verilog_systemverilog.vim'
+Plug 'karoliskoncevicius/sacredforest-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'kevinhwang91/rnvimr'
 call plug#end()
 
-colo monokai
+set background=light
+set termguicolors
+colorscheme sacredforest "solarized8_flat
+
+
+" ===
+" === markdown
+" ===
+let g:mkdp_path_to_chrome = "path/of/chrome"
+
+let g:auto_save = 1 
+
 " ===
 " === Ultisnips
 " ===
@@ -289,53 +308,56 @@ colo monokai
 "     au!
 "     au VimEnter * au! UltiSnips_AutoTrigger
 
+
+" ===
+" === xtabline
+" ===
+let g:xtabline_settings = {}
+let g:xtabline_settings.enable_mappings = 0
+let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
+let g:xtabline_settings.enable_persistance = 0
+let g:xtabline_settings.last_open_first = 1
+noremap to :XTabCycleMode<CR>
+noremap \p :echo expand('%:p')<CR>
+
+
+
+" ==
+" == GitGutter
+" ==
+" let g:gitgutter_signs = 0
+let g:gitgutter_sign_allow_clobber = 0
+let g:gitgutter_map_keys = 0
+let g:gitgutter_override_sign_column_highlight = 0
+let g:gitgutter_preview_win_floating = 1
+let g:gitgutter_sign_added = '▎'
+let g:gitgutter_sign_modified = '░'
+let g:gitgutter_sign_removed = '▏'
+let g:gitgutter_sign_removed_first_line = '▔'
+let g:gitgutter_sign_modified_removed = '▒'
+" autocmd BufWritePost * GitGutter
+nnoremap <LEADER>gf :GitGutterFold<CR>
+nnoremap H :GitGutterPreviewHunk<CR>
+nnoremap <LEADER>g- :GitGutterPrevHunk<CR>
+nnoremap <LEADER>g= :GitGutterNextHunk<CR>
+
+
 " ===
 " === rainbow
 " ===
 let g:rainbow_active = 1
 
+let g:vim_markdown_math = 1
+
 " ===
 " === rnvimr
 " ===
-" Make Ranger replace Netrw and be the file explorer
-let g:rnvimr_enable_ex = 1
-
-" Make Ranger to be hidden after picking a file
-let g:rnvimr_enable_picker = 1
-
-" Disable a border for floating window
+let g:rnvimr_ex_enable = 1
+let g:rnvimr_pick_enable = 1
 let g:rnvimr_draw_border = 0
-
-" Hide the files included in gitignore
-let g:rnvimr_hide_gitignore = 1
-
-" Change the border's color
-let g:rnvimr_border_attr = {'fg': 14, 'bg': -1}
-
-" Make Neovim wipe the buffers corresponding to the files deleted by Ranger
-let g:rnvimr_enable_bw = 1
-
-" Add a shadow window, value is equal to 100 will disable shadow
-let g:rnvimr_shadow_winblend = 70
-
-" Draw border with both
-let g:rnvimr_ranger_cmd = 'ranger --cmd="set draw_borders both"'
-
-" Link CursorLine into RnvimrNormal highlight in the Floating window
+let g:rnvimr_bw_enable = 1
 highlight link RnvimrNormal CursorLine
-
-nnoremap <silent> <M-o> :RnvimrToggle<CR>
-tnoremap <silent> <M-o> <C-\><C-n>:RnvimrToggle<CR>
-
-" Resize floating window by all preset layouts
-tnoremap <silent> <M-i> <C-\><C-n>:RnvimrResize<CR>
-
-" Resize floating window by special preset layouts
-tnoremap <silent> <M-l> <C-\><C-n>:RnvimrResize 1,8,9,11,5<CR>
-
-" Resize floating window by single preset layout
-tnoremap <silent> <M-y> <C-\><C-n>:RnvimrResize 6<CR>
-" Map Rnvimr action
+nnoremap <silent> R :RnvimrToggle<CR><C-\><C-n>:RnvimrResize 0<CR>
 let g:rnvimr_action = {
             \ '<C-t>': 'NvimEdit tabedit',
             \ '<C-x>': 'NvimEdit split',
@@ -343,53 +365,13 @@ let g:rnvimr_action = {
             \ 'gw': 'JumpNvimCwd',
             \ 'yw': 'EmitRangerCwd'
             \ }
-
-" Add views for Ranger to adapt the size of floating window
-let g:rnvimr_ranger_views = [
-            \ {'minwidth': 90, 'ratio': []},
-            \ {'minwidth': 50, 'maxwidth': 89, 'ratio': [1,1]},
-            \ {'maxwidth': 49, 'ratio': [1]}
-            \ ]
-
-" Customize the initial layout
-let g:rnvimr_layout = {
-            \ 'relative': 'editor',
-            \ 'width': float2nr(round(0.7 * &columns)),
-            \ 'height': float2nr(round(0.7 * &lines)),
-            \ 'col': float2nr(round(0.15 * &columns)),
-            \ 'row': float2nr(round(0.15 * &lines)),
-            \ 'style': 'minimal'
-            \ }
-
-" Customize multiple preset layouts
-" '{}' represents the initial layout
-let g:rnvimr_presets = [
-            \ {'width': 0.600, 'height': 0.600},
-            \ {},
-            \ {'width': 0.800, 'height': 0.800},
-            \ {'width': 0.950, 'height': 0.950},
-            \ {'width': 0.500, 'height': 0.500, 'col': 0, 'row': 0},
-            \ {'width': 0.500, 'height': 0.500, 'col': 0, 'row': 0.5},
-            \ {'width': 0.500, 'height': 0.500, 'col': 0.5, 'row': 0},
-            \ {'width': 0.500, 'height': 0.500, 'col': 0.5, 'row': 0.5},
-            \ {'width': 0.500, 'height': 1.000, 'col': 0, 'row': 0},
-            \ {'width': 0.500, 'height': 1.000, 'col': 0.5, 'row': 0},
-            \ {'width': 1.000, 'height': 0.500, 'col': 0, 'row': 0},
-            \ {'width': 1.000, 'height': 0.500, 'col': 0, 'row': 0.5}
-            \ ]
-
-" Fullscreen for initial layout
-" let g:rnvimr_layout = {
-"            \ 'relative': 'editor',
-"            \ 'width': &columns,
-"            \ 'height': &lines - 2,
-"            \ 'col': 0,
-"            \ 'row': 0,
-"            \ 'style': 'minimal'
-"            \ }
-"
-" Only use initial preset layout
-" let g:rnvimr_presets = [{}]
+let g:rnvimr_layout = { 'relative': 'editor',
+            \ 'width': &columns,
+            \ 'height': &lines,
+            \ 'col': 0,
+            \ 'row': 0,
+            \ 'style': 'minimal' }
+let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 
 "-----------------------------------------------------------------------------
