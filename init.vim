@@ -259,6 +259,7 @@ noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
 
 call plug#begin('~/.config/nvim/plugged')
 Plug '907th/vim-auto-save'
+Plug 'wakatime/vim-wakatime'
 Plug 'iamcco/markdown-preview.nvim'
 Plug 'airblade/vim-gitgutter'
 Plug 'mg979/vim-xtabline'
@@ -314,7 +315,7 @@ let g:coc_global_extensions = [
 	\ 'coc-yank']
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
-set updatetime=300
+set updatetime=100
 
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
@@ -327,12 +328,25 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-o> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 " Use `[g` and `]g` to navigate diagnostics
+
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -347,14 +361,13 @@ nmap <silent> gr <Plug>(coc-references)
 " ===
 " === markdown
 " ===
-let g:mkdp_path_to_chrome = "path/of/chrome"
 
-let g:auto_save = 1 
+let g:auto_save = 0 
 
 " ===
 " === Ultisnips
 " ===
-" let g:tex_flavor = "latex"
+ let g:tex_flavor = "latex"
 inoremap <c-n> <nop>
 let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<c-e>"
@@ -377,7 +390,6 @@ let g:xtabline_settings.enable_persistance = 0
 let g:xtabline_settings.last_open_first = 1
 noremap to :XTabCycleMode<CR>
 noremap \p :echo expand('%:p')<CR>
-
 
 
 " ==
