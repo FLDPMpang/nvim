@@ -5,7 +5,7 @@
 " ===
 " === System
 " ===
-"set clipboard=unnamedplus
+set clipboard=unnamedplus
 let &t_ut=''
 set autochdir
 set t_Co=256
@@ -32,7 +32,7 @@ set ttimeoutlen=0
 set notimeout
 set viewoptions=cursor,folds,slash,unix
 set wrap
-set tw=0
+set textwidth=0
 set indentexpr=
 set foldmethod=indent
 set foldlevel=99
@@ -119,10 +119,6 @@ nnoremap Y y$
 
 " Copy to system clipboard
 vnoremap Y "+y
-
-" Indentation
-nnoremap < <<
-nnoremap > >>
 
 " Search
 noremap <LEADER><CR> :nohlsearch<CR>
@@ -215,8 +211,11 @@ noremap <LEADER>n <C-w>h
 noremap <LEADER>i <C-w>l
 noremap qf <C-w>o
 
-" Disable the default s key
-noremap s <nop>
+nnoremap [e  :<c-u>execute 'move -1-'. v:count1<cr>
+nnoremap ]e  :<c-u>execute 'move +'. v:count1<cr>
+
+nnoremap [<space>  :<c-u>put! =repeat(nr2char(10), v:count1)<cr>'[
+nnoremap ]<space>  :<c-u>put =repeat(nr2char(10), v:count1)<cr>
 
 " split the screens to up (horizontal), down (horizontal), left (vertical), right (vertical)
 noremap su :set nosplitbelow<CR>:split<CR>:set splitbelow<CR>
@@ -348,8 +347,8 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 " Use `[g` and `]g` to navigate diagnostics
 
 " Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
+nmap <silent> <LEADER>= <Plug>(coc-diagnostic-next)
 
 " GoTo code navigation.
 nmap <silent> gd <Plug>(coc-definition)
@@ -357,6 +356,22 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
+nnoremap <space>t :CocCommand explorer<CR>
+
+" Use K to show documentation in preview window.
+nnoremap <silent> <LEADER>h :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " ===
 " === markdown
@@ -367,7 +382,7 @@ let g:auto_save = 0
 " ===
 " === Ultisnips
 " ===
- let g:tex_flavor = "latex"
+let g:tex_flavor = "latex"
 inoremap <c-n> <nop>
 let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<c-e>"
@@ -388,8 +403,7 @@ let g:xtabline_settings.enable_mappings = 0
 let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
 let g:xtabline_settings.enable_persistance = 0
 let g:xtabline_settings.last_open_first = 1
-noremap to :XTabCycleMode<CR>
-noremap \p :echo expand('%:p')<CR>
+noremap \p :echo expandg'%:p')<CR>
 
 
 " ==
