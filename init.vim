@@ -257,12 +257,14 @@ noremap tmi :+tabmove<CR>
 noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
 
 call plug#begin('~/.config/nvim/plugged')
+Plug 'ashfinal/vim-colors-violet'
 Plug 'RRethy/vim-illuminate'
 Plug 'wakatime/vim-wakatime'
 Plug 'iamcco/markdown-preview.nvim'
 Plug 'airblade/vim-gitgutter'
 Plug 'mg979/vim-xtabline'
 Plug 'tpope/vim-surround'
+Plug 'gcmt/wildfire.vim'
 Plug 'whatyouhide/vim-gotham'
 Plug 'chriskempson/base16-vim'
 Plug 'junegunn/vim-peekaboo'
@@ -488,6 +490,13 @@ let g:ale_sign_column_always = 1
 let g:ale_sign_error = '>>'
 let g:ale_sign_warning = '--'
  
+let g:airline_left_sep = '⮀'
+let g:airline_left_alt_sep = '⮁'
+let g:airline_right_sep = '⮂'
+let g:airline_right_alt_sep = '⮃'
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#whitespace#symbol = '!'
+
 " show errors or warnings in my statusline
 let g:airline#extensions#ale#enabled = 1
 " self-define statusline
