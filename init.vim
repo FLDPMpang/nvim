@@ -257,7 +257,7 @@ noremap tmi :+tabmove<CR>
 noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
 
 call plug#begin('~/.config/nvim/plugged')
-Plug '907th/vim-auto-save'
+Plug 'RRethy/vim-illuminate'
 Plug 'wakatime/vim-wakatime'
 Plug 'iamcco/markdown-preview.nvim'
 Plug 'airblade/vim-gitgutter'
@@ -276,7 +276,6 @@ Plug 'luochen1990/rainbow'
 Plug 'vhda/verilog_systemverilog.vim'
 Plug 'karoliskoncevicius/sacredforest-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'kevinhwang91/rnvimr'
 call plug#end()
@@ -378,6 +377,15 @@ endfunction
 xmap <leader>a  <Plug>(coc-codeaction-selected)
 nmap <leader>aw  <Plug>(coc-codeaction-selected)w
 
+noremap <silent> <leader>ts :CocList tasks<CR>
+" coc-snippets
+imap <C-l> <Plug>(coc-snippets-expand)
+vmap <C-e> <Plug>(coc-snippets-select)
+let g:coc_snippet_next = '<c-e>'
+let g:coc_snippet_prev = '<c-n>'
+imap <TAB> <Plug>(coc-snippets-expand-jump)
+autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
+
 " ===
 " === markdown
 " ===
@@ -390,12 +398,12 @@ let g:auto_save = 0
 " ===
 " === Ultisnips
 " ===
-let g:tex_flavor = "latex"
-inoremap <c-n> <nop>
-let g:UltiSnipsExpandTrigger="<c-e>"
-let g:UltiSnipsJumpForwardTrigger="<c-e>"
-let g:UltiSnipsJumpBackwardTrigger="<c-n>"
-let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/Ultisnips/', $HOME.'/.config/nvim/plugged/vim-snippets/UltiSnips/']
+"let g:tex_flavor = "latex"
+"inoremap <c-n> <nop>
+"let g:UltiSnipsExpandTrigger="<c-e>"
+"let g:UltiSnipsJumpForwardTrigger="<c-e>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-n>"
+"let g:UltiSnipsSnippetDirectories = [$HOME.'/.config/nvim/Ultisnips/', $HOME.'/.config/nvim/plugged/vim-snippets/UltiSnips/']
 " silent! au BufEnter,BufRead,BufNewFile * silent! unmap <c-r>
 " " Solve extreme insert-mode lag on macOS (by disabling autotrigger)
 " augroup ultisnips_no_auto_expansion
@@ -412,6 +420,12 @@ let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
 let g:xtabline_settings.enable_persistance = 0
 let g:xtabline_settings.last_open_first = 1
 noremap \p :echo expandg'%:p')<CR>
+
+
+" ===
+" === vim-illuminate
+" ===
+let g:Illuminate_delay = 0
 
 
 " ==
