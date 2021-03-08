@@ -1,4 +1,4 @@
-#@2021FLDPMpang 
+" @2021FLDPMpang 
 " ====================
 " === Editor Setup ===
 " ====================
@@ -273,7 +273,6 @@ Plug 'crusoexia/vim-monokai'
 Plug 'vim-airline/vim-airline'
 Plug 'godlygeek/tabular' 
 Plug 'plasticboy/vim-markdown'
-Plug 'w0rp/ale'
 Plug 'luochen1990/rainbow'
 Plug 'vhda/verilog_systemverilog.vim'
 Plug 'karoliskoncevicius/sacredforest-vim'
@@ -385,7 +384,7 @@ imap <C-l> <Plug>(coc-snippets-expand)
 vmap <C-e> <Plug>(coc-snippets-select)
 let g:coc_snippet_next = '<c-e>'
 let g:coc_snippet_prev = '<c-n>'
-imap <TAB> <Plug>(coc-snippets-expand-jump)
+imap <C-h> <Plug>(coc-snippets-expand-jump)
 autocmd BufRead,BufNewFile tsconfig.json set filetype=jsonc
 
 " ===
@@ -482,55 +481,3 @@ let g:rnvimr_layout = { 'relative': 'editor',
 let g:rnvimr_presets = [{'width': 1.0, 'height': 1.0}]
 
 
-"-----------------------------------------------------------------------------
-" plugin - ale.vim
-"-----------------------------------------------------------------------------
-"keep the sign gutter open
-let g:ale_sign_column_always = 1
-let g:ale_sign_error = '>>'
-let g:ale_sign_warning = '--'
- 
-let g:airline_left_sep = '⮀'
-let g:airline_left_alt_sep = '⮁'
-let g:airline_right_sep = '⮂'
-let g:airline_right_alt_sep = '⮃'
-let g:airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#whitespace#symbol = '!'
-
-" show errors or warnings in my statusline
-let g:airline#extensions#ale#enabled = 1
-" self-define statusline
-"function! LinterStatus() abort
-"    let l:counts = ale#statusline#Count(bufnr(''))
-"
-"    let l:all_errors = l:counts.error + l:counts.style_error
-"    let l:all_non_errors = l:counts.total - l:all_errors
-"
-"    return l:counts.total == 0 ? 'OK' : printf(
-"    \  '%dW %dE',
-"    \  all_non_errors,
-"    \  all_errors
-"    \)
-"endfunction
-"set statusline=%{LinterStatus()}
-" echo message
-" %s is the error message itself
-" %linter% is the linter name
-" %severity is the severity type
-" let g:ale_echo_msg_error_str = 'E'
-" let g:ale_echo_msg_warning_str = 'W'
-" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
- 
-" use quickfix list instead of the loclist
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-" only enable these linters
-"let g:ale_linters = {
-"\    'javascript': ['eslint']
-"\}
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-J> <Plug>(ale_next_wrap)
-" run lint only on saving a file
-" let g:ale_lint_on_text_changed = 'never'
-" dont run lint on opening a file
-" let g:ale_lint_on_enter = 0
