@@ -34,7 +34,7 @@ set viewoptions=cursor,folds,slash,unix
 set wrap
 set textwidth=0
 set indentexpr=
-set foldmethod=indent
+set foldmethod=syntax
 set foldlevel=99
 set foldenable
 set formatoptions-=tc
@@ -257,6 +257,7 @@ noremap tmi :+tabmove<CR>
 noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
 
 call plug#begin('~/.config/nvim/plugged')
+Plug 'puremourning/vimspector'
 Plug 'ashfinal/vim-colors-violet'
 Plug 'RRethy/vim-illuminate'
 Plug 'wakatime/vim-wakatime'
@@ -274,7 +275,6 @@ Plug 'vim-airline/vim-airline'
 Plug 'godlygeek/tabular' 
 Plug 'plasticboy/vim-markdown'
 Plug 'luochen1990/rainbow'
-Plug 'vhda/verilog_systemverilog.vim'
 Plug 'karoliskoncevicius/sacredforest-vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'honza/vim-snippets'
@@ -334,11 +334,7 @@ function! s:check_back_space() abort
 endfunction
 
 " Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-o> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
+inoremap <silent><expr> <c-o> coc#refresh()
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
@@ -427,6 +423,26 @@ noremap \p :echo expandg'%:p')<CR>
 " === vim-illuminate
 " ===
 let g:Illuminate_delay = 0
+
+
+
+" ===
+" === vimspector
+" ===
+let g:vimspector_enable_mappings = 'HUMAN'
+function! s:read_template_into_buffer(template)
+	" has to be a function to avoid the extra space fzf#run insers otherwise
+	execute '0r ~/.config/nvim/sample_vimspector_json/'.a:template
+endfunction
+command! -bang -nargs=* LoadVimSpectorJsonTemplate call fzf#run({
+			\   'source': 'ls -1 ~/.config/nvim/sample_vimspector_json',
+			\   'down': 20,
+			\   'sink': function('<sid>read_template_into_buffer')
+			\ })
+" noremap <leader>vs :tabe .vimspector.json<CR>:LoadVimSpectorJsonTemplate<CR>
+sign define vimspectorBP text=☛ texthl=Normal
+sign define vimspectorBPDisabled text=☞ texthl=Normal
+sign define vimspectorPC text=🔶 texthl=SpellBad
 
 
 " ==

@@ -180,16 +180,6 @@
 		"eelixir": "mix_format"
 	},
 	"languageserver": {
-		"golang": {
-			"command": "gopls",
-			"rootPatterns": ["go.mod"],
-			"filetypes": ["go"],
-			"initializationOptions": {
-				"gocodeCompletionEnabled": true,
-				"diagnosticsEnabled": true,
-				"lintTool": "golint"
-			}
-		},
 		"bash": {
 			"command": "sh",
 			"args": ["start"],
@@ -206,7 +196,7 @@
 			"filetypes": ["rust"],
 			"rootPatterns": ["Cargo.toml"]
 		},
-		"hdlChecker": {
+		"hdlchecker": {
 			"command": "hdl_checker",
 			"args": ["--lsp"],
 			"filetypes": ["vhdl", "verilog", "systemverilog"]
