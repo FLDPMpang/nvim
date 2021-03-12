@@ -78,6 +78,21 @@
 | `<LEADER>h` | 显示文档         |
 | `ts`        | 翻译单词         |
 
+### [coc.explorer](https://github.com/weirongxu/coc-explorer)
+
+| 快捷键 | 行为           |
+| ------ | -------------- |
+| `tt`   | 打开文件浏览器 |
+| `?`    | 帮助           |
+| `i`    | 打开           |
+| `o`    | 展开文件夹     |
+| `a`    | 添加文件       |
+| `yn`   | 复制文件名     |
+| `M`    | 添加文件夹     |
+| `cw`   | 重命名文件     |
+| `.`    | 隐藏文件显示   |
+| `b`    | 跳转到缓冲区   |
+
 ### [rnvimr](https://github.com/kevinhwang91/rnvimr)
 
 | 快捷键   | 行为                 |
