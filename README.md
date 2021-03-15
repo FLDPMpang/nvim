@@ -64,6 +64,12 @@
 
 ## 插件
 
+| 快捷键             | 行为         | 插件         |
+| ------------------ | ------------ | ------------ |
+| `ENTER`            | 智能选择     | wildfire.vim |
+| `S 符号`           | 使用符号包裹 | vim-surround |
+| `cs 原符号 新符号` | 替换符号     | vim-surround |
+
 ### [coc.nvim](https://github.com/neoclide/coc.nvim)
 
 | 快捷键       | 行为             |
