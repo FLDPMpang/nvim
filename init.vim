@@ -103,9 +103,6 @@ noremap Q :q<CR>
 noremap <C-q> :qa<CR>
 noremap S :w<CR>
 
-" Open the vimrc file anytime
-noremap <LEADER>rc :e ~/.config/nvim/init.vim<CR>
-noremap <LEADER>rv :e .nvimrc<CR>
 
 " Undo operations
 noremap l u
@@ -126,15 +123,8 @@ noremap <LEADER><CR> :nohlsearch<CR>
 " Adjacent duplicate words
 noremap <LEADER>dw /\(\<\w\+\>\)\_s*\1
 
-" Space to Tab
-nnoremap <LEADER>tt :%s/    /\t/g
-vnoremap <LEADER>tt :s/    /\t/g
-
-" Folding
-noremap <silent> <LEADER>o za
 
 " nnoremap <c-n> :tabe<CR>:-tabmove<CR>:term lazynpm<CR>
-
 
 " ===
 " === Cursor Movement
@@ -244,17 +234,61 @@ noremap <LEADER>q <C-w>j:q<CR>
 " ===
 " === Tab management
 " ===
-" Create a new tab with tu
-noremap tu :tabe<CR>
+" Create a new tab with 
+noremap <LEADER>o :tabe<CR>
 " Move around tabs with tn and ti
-noremap tn :-tabnext<CR>
-noremap ti :+tabnext<CR>
+noremap <LEADER>l :-tabnext<CR>
+noremap <LEADER>y :+tabnext<CR>
 " Move the tabs with tmn and tmi
-noremap tmn :-tabmove<CR>
-noremap tmi :+tabmove<CR>
+noremap <LEADER>mn :-tabmove<CR>
+noremap <LEADER>mi :+tabmove<CR>
 
 " Opening a terminal window
 noremap <LEADER>/ :set splitbelow<CR>:split<CR>:res +10<CR>:term<CR>
+
+" Compile function
+noremap <LEADER>r :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+	exec "w"
+	if &filetype == 'c'
+		exec "!g++ % -o %<"
+		exec "!time ./%<"
+	elseif &filetype == 'cpp'
+		set splitbelow
+		exec "!g++ -std=c++11 % -Wall -o %<"
+		:sp
+		:res -15
+		:term ./%<
+	elseif &filetype == 'java'
+		exec "!javac %"
+		exec "!time java %<"
+	elseif &filetype == 'sh'
+		:!time bash %
+	elseif &filetype == 'python'
+		set splitbelow
+		:sp
+		:term python3 %
+	elseif &filetype == 'html'
+		silent! exec "!".g:mkdp_browser." % &"
+	elseif &filetype == 'markdown'
+		exec "InstantMarkdownPreview"
+	elseif &filetype == 'tex'
+		silent! exec "VimtexStop"
+		silent! exec "VimtexCompile"
+	elseif &filetype == 'dart'
+		exec "CocCommand flutter.run -d ".g:flutter_default_device." ".g:flutter_run_args
+		silent! exec "CocCommand flutter.dev.openDevLog"
+	elseif &filetype == 'javascript'
+		set splitbelow
+		:sp
+		:term export DEBUG="INFO,ERROR,WARNING"; node --trace-warnings .
+	elseif &filetype == 'go'
+		set splitbelow
+		:sp
+		:term go run .
+	endif
+endfunc
+
 
 call plug#begin('~/.config/nvim/plugged')
 Plug 'puremourning/vimspector'
@@ -352,7 +386,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-nnoremap tt :CocCommand explorer<CR>
+nnoremap <LEADER>tt :CocCommand explorer<CR>
 nmap <leader>rn <Plug>(coc-rename)
 
 nnoremap <silent> <LEADER>h :call <SID>show_documentation()<CR>
@@ -366,7 +400,7 @@ function! s:show_documentation()
   endif
 endfunction
 
-nmap ts <Plug>(coc-translator-p)
+nmap <LEADER>ts <Plug>(coc-translator-p)
 
 function! s:cocActionsOpenFromSelected(type) abort
   execute 'CocCommand actions.open ' . a:type
